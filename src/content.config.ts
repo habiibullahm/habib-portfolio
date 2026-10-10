@@ -83,6 +83,12 @@ const projects = defineCollection({
     what: z.string(),
     why: z.string(),
     how: z.string(),
+    /** Optional ordered steps for how the system works; keeps long technical detail scannable. */
+    flow: z.array(z.string()).optional(),
+    /** Optional single technical decision and the reason behind it. */
+    decision: z.string().optional(),
+    /** Optional real evaluation results, including caveats. */
+    evaluation: z.string().optional(),
     /** Screenshots, videos, or live interactive embeds on the detail page. */
     previews: z.array(previewItem).optional(),
     draft: z.boolean().default(false),
