@@ -9,7 +9,7 @@ showcase:
   focusX: 50
   focusY: 30
   caption: "Independent demo"
-outcome: "An AI information assistant designed to answer business questions using official information, with grounded responses, source-aware answers, guardrails, and fallback behavior. Deployed live."
+outcome: "A RAG assistant for Bidakara Medical Center's public information: clinic, service, doctor, and schedule answers quoted from official pages, with medical, emergency, and privacy guardrails. Live demo."
 client: "Independent project"
 domain: "Applied AI · RAG"
 type: "AI assistant"
@@ -19,21 +19,28 @@ capabilities: ["RAG", "Grounded responses", "Guardrails"]
 order: 4
 section: "ai"
 stack:
-  - "RAG"
-  - "Grounded responses"
-  - "Source-aware answers"
-  - "Guardrails"
-  - "Fallback behavior"
-  - "Production deployment"
+  - "Next.js"
+  - "React"
+  - "TypeScript"
+  - "PostgreSQL + pgvector"
+  - "Neon"
+  - "OpenAI-compatible chat & embeddings"
+  - "Cheerio"
+  - "Playwright"
+  - "Zod"
+  - "Docker"
+  - "GitHub Actions"
+  - "Vercel"
 previews:
   - type: "image"
     src: "/images/projects/bidakara-ai-assistant-preview.webp"
     alt: "Bidakara AI Assistant welcome screen and suggested questions"
-what: "An AI information assistant designed around official business information and grounded answers."
-why: "Business information assistants are only useful when people can trust what they say. This project puts accurate, source-aware answers ahead of unsupported responses."
-how: "Combines a retrieval-augmented generation approach with official business information. Grounded responses and source-aware answers help tie answers to the available information; guardrails and fallback behavior address questions the assistant cannot reliably answer."
+what: "An independent prototype that answers questions about Bidakara Medical Center from its official public website: clinic addresses, services, doctors, and practice schedules. General answers quote and cite the official page they come from; doctor and schedule answers are read from structured tables. It is not a medical service, a registration system, or an official Bidakara product."
+why: "A clinic assistant that guesses is worse than none: a wrong schedule sends someone to a closed clinic, and a confident answer to a health question is unsafe. The goal was answers people can verify, and a clear hand-off to official channels when the sources don't support an answer."
+how: "Ingestion is a CLI that fetches only allowlisted HTTPS pages on the official domain, renders the branch pages that load doctors client-side in headless Chromium, and is idempotent by content hash: a failed fetch or embedding run leaves the previous index intact. Documents, chunks, 1536-dimension embeddings, and clinic/doctor/schedule tables live in PostgreSQL with pgvector. Retrieval combines cosine similarity, keyword search, and metadata filters. Health, emergency, and personal-data questions are filtered before retrieval and never stored. General answers must be exact quotes from a retrieved official chunk, and schedules that are stale or conditional (On Call, by appointment) are not presented as fixed hours. One decision came from a staging failure: official pages disagree on BiMedCare+ registration timing, and in one staging diagnosis the model answered anyway. A deterministic conflict guard now runs before retrieval and evidence selection and returns a notice instead, so the model cannot pick a side. Latest online evaluation (52 cases, 28 Sep 2026): 40/40 retrieval hits, 36/40 expected factual answers, 5/5 correct no-answers, p95 latency 2.6 s. Three misses were abstentions and one cited a related page instead of the exact one. That run is an automated check, not human or clinical review. CI runs typecheck, lint, unit tests, a 52-case offline guardrail evaluation, and Playwright E2E against real PostgreSQL with only the model provider faked."
 links:
   live: "https://bidakara-ai-assistant.vercel.app/"
 ---
 
-An applied AI assistant for finding business information through useful, grounded answers.
+An independent RAG assistant that answers Bidakara Medical Center questions with exact quotes from official pages,
+structured doctor schedules, and guardrails that fall back to official channels.
