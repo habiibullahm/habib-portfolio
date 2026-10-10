@@ -270,6 +270,15 @@ const backHref = "/#projects";
           class="preview-lightbox m-0 border-0 bg-transparent p-0"
           aria-label="Preview image"
         >
+          <form method="dialog" class="fixed right-4 top-4 z-10 sm:right-6 sm:top-6">
+            <button
+              type="submit"
+              aria-label="Close image preview"
+              class="inline-flex min-h-11 items-center gap-2 rounded-md border border-line bg-surface px-4 font-display text-sm text-ink transition hover:border-accent hover:text-accent"
+            >
+              Close <span aria-hidden="true">✕</span>
+            </button>
+          </form>
           <div
             id="preview-lightbox-stage"
             class="flex max-h-[85vh] max-w-[min(92vw,1100px)] items-center justify-center"

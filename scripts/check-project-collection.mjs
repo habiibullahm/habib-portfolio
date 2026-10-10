@@ -5,10 +5,10 @@ const homepage = readFileSync("dist/index.html", "utf8");
 const archive = readFileSync("dist/projects/index.html", "utf8");
 const expected = [
   ["nibie", "ai"],
-  ["bidakara-ai-assistant", "ai"],
-  ["agres-ai-sales-assistant", "ai"],
   ["task-management", "web"],
   ["podmark", "web"],
+  ["bidakara-ai-assistant", "ai"],
+  ["agres-ai-sales-assistant", "ai"],
   ["trendplan", "web"],
   ["sahamku", "tools"],
   ["cv-screener", "tools"],
