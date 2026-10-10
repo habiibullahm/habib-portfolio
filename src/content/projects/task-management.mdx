@@ -8,7 +8,7 @@ showcase:
   alt: "Task Management dashboard with task status and team actions"
   focusX: 50
   focusY: 35
-outcome: "Auth, teams, Kanban, and comments — a training product with CI, split across Vercel, Neon, and a self-managed Docker host."
+outcome: "A task board for small teams: sign in, organise work in personal or team spaces, move cards across columns, and discuss each task in comments. Live demo."
 client: "Personal / Portfolio"
 domain: "Productivity"
 type: "Web application"
@@ -28,7 +28,7 @@ stack:
 image: "/images/projects/task-management-logo.webp"
 imageAlt: "Task Management Platform logo"
 what: "A full-stack task app for individuals and small teams. Sign in, work in personal or team spaces, move work across Kanban columns, leave comments, and manage tasks end to end — the kind of product surface you expect from a real productivity tool."
-why: "I wanted portfolio work that proves shipping, not just UI mockups: authentication, a real database, CI, and a public deploy. This project is that practice run — UI, API, Postgres, Docker, and a multi-provider deploy in one arc."
+why: "A shared task board answers \"who is doing what, and where is it up to?\" in one place, with the discussion next to each task. It is also a practice project: I built it to take one product all the way from interface to database to public deployment, with automated checks on every change."
 how: "React talks to a Node API backed by PostgreSQL. JWT covers personal and team access. Boards handle task flow; comments live on tasks. The SPA deploys to Vercel, which proxies API and Socket.IO calls to a Dockerized API on a self-managed VPS, backed by Neon Postgres."
 previews:
   - type: video

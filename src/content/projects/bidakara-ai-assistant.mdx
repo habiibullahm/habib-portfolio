@@ -9,7 +9,7 @@ showcase:
   focusX: 50
   focusY: 30
   caption: "Independent demo"
-outcome: "A RAG assistant for Bidakara Medical Center's public information: clinic, service, doctor, and schedule answers quoted from official pages, with medical, emergency, and privacy guardrails. Live demo."
+outcome: "A chatbot that answers questions about Bidakara Medical Center (clinics, services, doctors, schedules) using only its official website, and tells you when it cannot be sure. Independent demo."
 client: "Independent project"
 domain: "Applied AI · RAG"
 type: "AI assistant"
@@ -37,7 +37,14 @@ previews:
     alt: "Bidakara AI Assistant welcome screen and suggested questions"
 what: "An independent prototype that answers questions about Bidakara Medical Center from its official public website: clinic addresses, services, doctors, and practice schedules. General answers quote and cite the official page they come from; doctor and schedule answers are read from structured tables. It is not a medical service, a registration system, or an official Bidakara product."
 why: "A clinic assistant that guesses is worse than none: a wrong schedule sends someone to a closed clinic, and a confident answer to a health question is unsafe. The goal was answers people can verify, and a clear hand-off to official channels when the sources don't support an answer."
-how: "Ingestion is a CLI that fetches only allowlisted HTTPS pages on the official domain, renders the branch pages that load doctors client-side in headless Chromium, and is idempotent by content hash: a failed fetch or embedding run leaves the previous index intact. Documents, chunks, 1536-dimension embeddings, and clinic/doctor/schedule tables live in PostgreSQL with pgvector. Retrieval combines cosine similarity, keyword search, and metadata filters. Health, emergency, and personal-data questions are filtered before retrieval and never stored. General answers must be exact quotes from a retrieved official chunk, and schedules that are stale or conditional (On Call, by appointment) are not presented as fixed hours. One decision came from a staging failure: official pages disagree on BiMedCare+ registration timing, and in one staging diagnosis the model answered anyway. A deterministic conflict guard now runs before retrieval and evidence selection and returns a notice instead, so the model cannot pick a side. Latest online evaluation (52 cases, 28 Sep 2026): 40/40 retrieval hits, 36/40 expected factual answers, 5/5 correct no-answers, p95 latency 2.6 s. Three misses were abstentions and one cited a related page instead of the exact one. That run is an automated check, not human or clinical review. CI runs typecheck, lint, unit tests, a 52-case offline guardrail evaluation, and Playwright E2E against real PostgreSQL with only the model provider faked."
+how: "The assistant first collects the official pages into a searchable library. When you ask a question, it looks up the most relevant passages and answers by quoting them, with a link to the source. Doctor names and schedules come from a structured table rather than free text."
+flow:
+  - "Collect: a script reads only approved pages on the official site (using a hidden browser for pages that load doctor lists late) and updates only what changed. If a refresh fails, the previous version stays in place."
+  - "Screen: health, emergency, and personal-information questions are caught first. The assistant does not answer them, and the question is not saved."
+  - "Look up: it finds the best-matching passages by meaning and by keywords, narrowed by clinic or service."
+  - "Answer: it quotes the source and links to it. Schedules that are out of date or conditional (like \"on call\" or \"by appointment\") are not shown as fixed hours. If the sources do not support an answer, it points you to the official channels."
+decision: "The official pages disagree about when to register for BiMedCare+, and in one test the AI answered anyway. Now a fixed rule checks for this known conflict before the assistant looks anything up, and it tells you the sources are inconsistent instead of choosing one."
+evaluation: "I tested it on 52 questions. For the 40 that have a known correct answer, it found the right page every time and gave the expected answer 36 times; in the other 4 it declined (3) or cited a nearby page (1). It correctly refused all 5 questions it should not answer. Typical response time was about 0.4 seconds, and 95% were under 2.6 seconds. These are automated checks, not a review by doctors or the clinic, so it is a prototype and not a medical service. Every code change is also checked automatically (type checks, unit tests, and browser tests against a real database)."
 links:
   live: "https://bidakara-ai-assistant.vercel.app/"
 ---
