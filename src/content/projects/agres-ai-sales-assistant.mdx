@@ -9,7 +9,7 @@ showcase:
   focusX: 50
   focusY: 25
   caption: "Independent demo"
-outcome: "An AI sales assistant that discovers product needs, considers customer budgets, recommends relevant products, qualifies leads, and guides the next sales action. Deployed live."
+outcome: "A grounded sales assistant on a snapshot of the AGRES.ID laptop catalog: it recommends and compares laptops from stored data, answers policy questions with cited sources, and turns the chat into a scored lead. Live demo."
 client: "Independent project"
 domain: "Applied AI · Sales"
 type: "AI assistant"
@@ -18,22 +18,27 @@ capabilities: ["Product discovery", "Recommendations", "Lead qualification"]
 order: 5
 section: "ai"
 stack:
-  - "Conversational product discovery"
-  - "Product recommendations"
-  - "Budget understanding"
-  - "Lead qualification"
-  - "Structured customer intent"
-  - "Next best action"
-  - "Production deployment"
+  - "Next.js"
+  - "React"
+  - "TypeScript"
+  - "PostgreSQL + pgvector"
+  - "Supabase"
+  - "PGlite"
+  - "Zod"
+  - "Tailwind CSS"
+  - "Vitest"
+  - "Playwright"
+  - "Vercel"
 previews:
   - type: "image"
     src: "/images/projects/agres-ai-sales-assistant-preview.webp"
     alt: "AGRES AI Sales Assistant product discovery demo and structured intent panel"
-what: "A conversational AI sales assistant that helps match customer needs with relevant products and guide the next sales step."
-why: "Product discovery can feel overwhelming when customers need to compare their requirements, budget, and available options. A conversational assistant helps keep recommendations relevant and the next action clear."
-how: "Guides customers through a product-discovery conversation, using their stated requirements and budget to inform product recommendations. It captures structured customer intent, supports lead qualification, and surfaces a next best action."
+what: "A conversational sales assistant for the AGRES.ID laptop catalog, built on a snapshot of its public catalog and policy pages. A shopper narrows laptops down by budget and needs, compares two or three models, and asks about warranty, shipping, or returns. The conversation becomes a scored lead with a next best action and a summary for a human salesperson. Not affiliated with AGRES.ID; prices and stock are snapshot data, not real-time."
+why: "In sales, a made-up price, spec, or discount is a liability, not a typo. The rule the project is built around: conversation can be generative, business facts must be grounded. Price, stock, specs, promotions, and policies come only from stored data, and when the data has no answer the assistant says it has not found verified information."
+how: "A Next.js modular monolith. Rule-based NLU extracts requirements, merges them into a persisted conversation state, and routes to an intent handler. Recommendations apply SQL hard filters (budget, RAM, GPU, OS, weight, stock), then weighted scoring, and return two or three laptops with reasons and trade-offs. Policy questions use hybrid pgvector and Postgres full-text retrieval and quote the source section. Lead score (0–10), buying stage, and next best action are deterministic rules. The main decision: the LLM is optional and never a fact source. It may classify ambiguous intent or rephrase a verified draft, and every rewrite must pass a grounding validator that checks prices, specs, discounts, and URLs against database evidence, or it is discarded. The live demo runs the deterministic responder. Evaluation runs the real orchestrator and database: 53/53 on the curated set, which doubled as the tuning set, and 9/16 and 10/14 on the first runs of two held-out sets written afterward, with 0 hard-constraint violations and 0 unsupported claims on every set. The weak spot is generalization: top-3 policy retrieval on unseen paraphrases was 50–71% on first run. Storage is Supabase PostgreSQL with row-level security on every table, falling back to embedded PGlite when no database is configured; admin pages sit behind Basic Auth."
 links:
   live: "https://agres-ai-sales-assistant.vercel.app/chat"
 ---
 
-A production-deployed sales assistant for natural product discovery, relevant recommendations, and qualified customer intent.
+A grounded sales assistant demo for laptop discovery, comparison, and cited policy answers, where an optional LLM
+may rephrase but every business fact must match stored catalog data.
